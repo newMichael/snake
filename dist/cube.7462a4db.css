@@ -1,0 +1,49 @@
+#container {
+	width: 500px;
+	height: 500px;
+	perspective: 600px;
+}
+  
+.cube {
+	width: 500px;
+	height: 500px;
+	position: relative;
+	transform-style: preserve-3d;
+	transform: translateZ(-250px);
+	/* transition: transform 1s; */
+  }
+  
+.cube-face {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border: 2px solid black;
+	line-height: 500px;
+	font-size: 40px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+
+.front  { transform: rotateY( 0deg); }
+.right  { transform: rotateY( 90deg); }
+.back   { transform: rotateY(180deg); }
+.left  { transform: rotateY(-90deg); }
+.top    { transform: rotateX( 90deg); }
+.bottom { transform: rotateX(-90deg); }
+
+.front { background: hsla(  0, 100%, 50%, 0.7); }
+.right  { background: hsla( 60, 100%, 50%, 0.7); }
+.back   { background: hsla(120, 100%, 50%, 0.7); }
+.left   { background: hsla(180, 100%, 50%, 0.7); }
+.top    { background: hsla(240, 100%, 50%, 0.7); }
+.bottom { background: hsla(300, 100%, 50%, 0.7); }
+
+.front  { transform: rotateY(  0deg) translateZ(250px); }
+.right   { transform: rotateY( 90deg) translateZ(250px); }
+.back   { transform: rotateY(180deg) translateZ(250px); }
+.left   { transform: rotateY(-90deg) translateZ(250px); }
+.top    { transform: rotateX( 90deg) translateZ(250px); }
+.bottom { transform: rotateX(-90deg) translateZ(250px); }
+
+/*# sourceMappingURL=/cube.7462a4db.css.map */
