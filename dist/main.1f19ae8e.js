@@ -134,7 +134,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Snake =
 /*#__PURE__*/
 function () {
-  function Snake(camera) {
+  function Snake() {
     _classCallCheck(this, Snake);
 
     this.coords = [{
@@ -153,7 +153,6 @@ function () {
       x: 60,
       y: 150
     }];
-    this.camera = camera;
     this.fillColor = 'lightgreen';
     this.borderColor = 'darkgreen';
     this.vx = 10;
@@ -165,25 +164,24 @@ function () {
     key: "resetCoords",
     value: function resetCoords() {
       this.coords = [{
-        x: 250,
-        y: 250
+        x: 100,
+        y: 150
       }, {
-        x: 240,
-        y: 250
+        x: 90,
+        y: 150
       }, {
-        x: 230,
-        y: 250
+        x: 80,
+        y: 150
       }, {
-        x: 220,
-        y: 250
+        x: 70,
+        y: 150
       }, {
-        x: 210,
-        y: 250
+        x: 60,
+        y: 150
       }];
       this.vx = 10;
       this.vy = 0;
       this.direction = 'RIGHT';
-      this.camera.resetCube();
     }
   }, {
     key: "advance",
@@ -193,7 +191,6 @@ function () {
         y: this.coords[0].y + this.vy
       };
       this.coords.unshift(newHead);
-      this.camera.rotateCube(this.vx, this.vy);
 
       if (!game.isCollision()) {
         if (newHead.x === game.food.coords.x && newHead.y === game.food.coords.y) {
@@ -278,23 +275,21 @@ function () {
     }
   }, {
     key: "getRandomAndUnusedCoords",
-    value: function getRandomAndUnusedCoords(canvasSize, snake) {
-      var rand = this.getRandomCoords(canvasSize);
+    value: function getRandomAndUnusedCoords(canvasWidth, canvasHeight, snake) {
+      var rand = this.getRandomCoords(canvasWidth, canvasHeight);
 
       while (snake.coords.filter(function (coord) {
         return coord.x === rand[0] && coord.y === rand[1];
       }).length) {
-        console.log('redo');
-        rand = this.getRandomCoords(canvasSize);
+        rand = this.getRandomCoords(canvasWidth, canvasHeight);
       }
 
       return rand;
     }
   }, {
     key: "randomlySetFood",
-    value: function randomlySetFood(canvasSize, snake) {
-      var coords = this.getRandomAndUnusedCoords(canvasSize, snake);
-      console.log(coords);
+    value: function randomlySetFood(canvasWidth, canvasHeight, snake) {
+      var coords = this.getRandomAndUnusedCoords(canvasWidth, canvasHeight, snake);
       this.coords.x = coords[0];
       this.coords.y = coords[1];
     }
@@ -304,63 +299,6 @@ function () {
 }();
 
 exports.Food = Food;
-},{}],"lib/Camera.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Camera = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Camera =
-/*#__PURE__*/
-function () {
-  function Camera(id, size) {
-    _classCallCheck(this, Camera);
-
-    this.elem = document.getElementById(id);
-    this.x = size / 2;
-    this.y = size / 2;
-    this.xOriginal = size / 2;
-    this.yOriginal = size / 2;
-    this.size = size;
-  }
-
-  _createClass(Camera, [{
-    key: "rotateCube",
-    value: function rotateCube(x, y) {
-      this.x += x;
-      this.y += y;
-      var deg = this.calculateDeg();
-      this.elem.style.transform = "translateZ(-250px) rotateX(" + deg[0] + "deg) rotateY(" + deg[1] + "deg)";
-    }
-  }, {
-    key: "calculateDeg",
-    value: function calculateDeg() {
-      var xRatio = (this.x - this.size / 2) / (this.size / 2);
-      var yRatio = (this.y - this.size / 2) / (this.size / 2);
-      var xDeg = -45 * xRatio;
-      var yDeg = 45 * yRatio;
-      return [yDeg, xDeg];
-    }
-  }, {
-    key: "resetCube",
-    value: function resetCube() {
-      this.x = this.xOriginal;
-      this.y = this.yOriginal;
-    }
-  }]);
-
-  return Camera;
-}();
-
-exports.Camera = Camera;
 },{}],"lib/Game.js":[function(require,module,exports) {
 "use strict";
 
@@ -419,7 +357,7 @@ function () {
       this.score = 0;
       this.updateDOMScore();
       this.snake.resetCoords();
-      this.food.randomlySetFood(this.canvas.width, this.snake);
+      this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
       this.gameLoop();
     }
   }, {
@@ -496,7 +434,7 @@ function () {
     value: function handleEatFood() {
       this.score++;
       this.updateDOMScore();
-      this.food.randomlySetFood(this.canvas.width, this.snake);
+      this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
     }
   }, {
     key: "updateDOMScore",
@@ -519,15 +457,14 @@ var _Snake = require("./lib/Snake.js");
 
 var _Food = require("./lib/Food.js");
 
-var _Camera = require("./lib/Camera.js");
-
 var _Game = require("./lib/Game.js");
 
+//import {Camera} from './lib/Camera.js';
 window.addEventListener('load', function () {
   var food = new _Food.Food();
-  var canvas = document.getElementById("game-canvas");
-  var camera = new _Camera.Camera('game-cube', canvas.width);
-  var snake = new _Snake.Snake(camera);
+  var canvas = document.getElementById("game-canvas"); //const camera = new Camera('game-cube', canvas.width);
+
+  var snake = new _Snake.Snake();
   var options = {
     scoreElem: 'score'
   };
@@ -537,7 +474,7 @@ window.addEventListener('load', function () {
     game.handleKeyPress(e.keyCode);
   });
 });
-},{"./lib/Snake.js":"lib/Snake.js","./lib/Food.js":"lib/Food.js","./lib/Camera.js":"lib/Camera.js","./lib/Game.js":"lib/Game.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./lib/Snake.js":"lib/Snake.js","./lib/Food.js":"lib/Food.js","./lib/Game.js":"lib/Game.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

@@ -1,5 +1,5 @@
 export class Snake {
-	constructor(camera) {
+	constructor() {
 		this.coords = [
 			{x: 100, y: 150},
 			{x: 90, y: 150},
@@ -7,7 +7,6 @@ export class Snake {
 			{x: 70, y: 150},
 			{x: 60, y: 150}
 		];
-		this.camera = camera;
 		this.fillColor = 'lightgreen';
 		this.borderColor = 'darkgreen';
 		this.vx = 10;
@@ -17,22 +16,20 @@ export class Snake {
 
 	resetCoords() {
 		this.coords = [
-			{x: 250, y: 250},
-			{x: 240, y: 250},
-			{x: 230, y: 250},
-			{x: 220, y: 250},
-			{x: 210, y: 250}
+			{x: 100, y: 150},
+			{x: 90, y: 150},
+			{x: 80, y: 150},
+			{x: 70, y: 150},
+			{x: 60, y: 150}
 		];
 		this.vx = 10;
 		this.vy = 0;
 		this.direction = 'RIGHT';
-		this.camera.resetCube();
 	}
 
 	advance(game) {
 		const newHead = {x: this.coords[0].x + this.vx, y: this.coords[0].y + this.vy};
 		this.coords.unshift(newHead);
-		this.camera.rotateCube(this.vx, this.vy);
 
 		if (!game.isCollision()) {
 			if (newHead.x === game.food.coords.x && newHead.y === game.food.coords.y) {

@@ -11,19 +11,17 @@ export class Food {
 		return [Math.floor(Math.random() * canvasSize/10) * 10, Math.floor(Math.random() * canvasSize/10) * 10];
 	}
 
-	getRandomAndUnusedCoords(canvasSize, snake) {
-		let rand = this.getRandomCoords(canvasSize);
+	getRandomAndUnusedCoords(canvasWidth, canvasHeight, snake) {
+		let rand = this.getRandomCoords(canvasWidth, canvasHeight);
 
 		while (snake.coords.filter(coord => coord.x === rand[0] && coord.y === rand[1]).length) {
-			console.log('redo');
-			rand = this.getRandomCoords(canvasSize);
+			rand = this.getRandomCoords(canvasWidth, canvasHeight);
 		}
 		return rand;
 	}
 
-	randomlySetFood(canvasSize, snake) {
-		let coords = this.getRandomAndUnusedCoords(canvasSize, snake);
-		console.log(coords);
+	randomlySetFood(canvasWidth, canvasHeight, snake) {
+		let coords = this.getRandomAndUnusedCoords(canvasWidth, canvasHeight, snake);
 		this.coords.x = coords[0];
 		this.coords.y = coords[1];
 	}

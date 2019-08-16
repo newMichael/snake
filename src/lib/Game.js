@@ -25,7 +25,7 @@ export class Game {
 		this.score = 0;
 		this.updateDOMScore();
 		this.snake.resetCoords();
-		this.food.randomlySetFood(this.canvas.width, this.snake);
+		this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
 		this.gameLoop();
 	}
 	
@@ -90,7 +90,7 @@ export class Game {
 	handleEatFood() {
 		this.score++;
 		this.updateDOMScore();
-		this.food.randomlySetFood(this.canvas.width, this.snake);
+		this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
 	}
 
 	updateDOMScore() {
