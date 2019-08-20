@@ -12,7 +12,7 @@ window.addEventListener('load', function () {
 		scoreElem: 'score'
 	};
 	const game = new Game(snake, food, canvas, options);
-	game.clearCanvas();
+	game.previewGame();
 	document.addEventListener("keydown", function(e) {
 		game.handleKeyPress(e.keyCode);
 	});
