@@ -26,6 +26,8 @@ export class Game {
 		this.updateDOMScore();
 		this.snake.resetCoords();
 		this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
+		const gameStartEvent = new CustomEvent('gameStart');
+		window.dispatchEvent(gameStartEvent);
 		this.gameLoop();
 	}
 	
@@ -46,6 +48,12 @@ export class Game {
 			} catch(e) {
 				self.drawSnake();
 				self.gameOver = true;
+				const gameOverEvent = new CustomEvent('gameOver', {
+					detail: {
+						score: self.score
+					}
+				});
+				window.dispatchEvent(gameOverEvent);
 				return;
 			}
 			self.drawSnake();

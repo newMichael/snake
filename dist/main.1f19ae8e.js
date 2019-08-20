@@ -358,6 +358,8 @@ function () {
       this.updateDOMScore();
       this.snake.resetCoords();
       this.food.randomlySetFood(this.canvas.width, this.canvas.height, this.snake);
+      var gameStartEvent = new CustomEvent('gameStart');
+      window.dispatchEvent(gameStartEvent);
       this.gameLoop();
     }
   }, {
@@ -381,6 +383,12 @@ function () {
         } catch (e) {
           self.drawSnake();
           self.gameOver = true;
+          var gameOverEvent = new CustomEvent('gameOver', {
+            detail: {
+              score: self.score
+            }
+          });
+          window.dispatchEvent(gameOverEvent);
           return;
         }
 
@@ -474,6 +482,16 @@ window.addEventListener('load', function () {
     game.handleKeyPress(e.keyCode);
   });
 });
+window.addEventListener('gameStart', function (e) {
+  // e.target matches elem
+  console.log(e);
+  console.log('start event');
+});
+window.addEventListener('gameOver', function (e) {
+  // e.target matches elem
+  console.log(e);
+  console.log('end event');
+});
 },{"./lib/Snake.js":"lib/Snake.js","./lib/Food.js":"lib/Food.js","./lib/Game.js":"lib/Game.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -502,7 +520,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59714" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51638" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

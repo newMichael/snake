@@ -17,3 +17,15 @@ window.addEventListener('load', function () {
 		game.handleKeyPress(e.keyCode);
 	});
 });
+
+window.addEventListener('gameStart', function (e) {
+	// e.target matches elem
+	console.log(e);
+	console.log('start event');
+});
+
+window.addEventListener('gameOver', function (e) {
+	// e.target matches elem
+	console.log(e);
+	console.log('end event');
+});
